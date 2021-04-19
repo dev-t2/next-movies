@@ -18,6 +18,12 @@
     "react-hooks/exhaustive-deps": "warn",
     "arrow-parens": "off",
     "no-use-before-define": "off",
-    "react/jsx-filename-extension": "off"
+    "react/jsx-filename-extension": "off",
+    "no-confusing-arrow": "off",
+    "implicit-arrow-linebreak": "off",
+    "comma-dangle": "off",
+    "object-curly-newline": "off",
+    "function-paren-newline": "off",
+    "react/jsx-one-expression-per-line": "off"
   }
 }

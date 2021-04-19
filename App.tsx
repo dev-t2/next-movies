@@ -1,9 +1,11 @@
-import React, { memo, useEffect, useState } from 'react';
-import { ActivityIndicator } from 'react-native';
+import React, { memo, useCallback, useEffect, useMemo, useState } from 'react';
+import { ActivityIndicator, StatusBar } from 'react-native';
+import { MaterialIcons } from '@expo/vector-icons';
 import { Camera } from 'expo-camera';
+import * as FaceDetector from 'expo-face-detector';
 import styled from 'styled-components/native';
 
-const StyledView = styled.SafeAreaView({
+const StyledSafeAreaView = styled.SafeAreaView({
   flex: 1,
   justifyContent: 'center',
   alignItems: 'center',
@@ -20,8 +22,43 @@ const StyledCamera = styled(Camera)({
   height: '100%',
 });
 
+const StyledSmile = styled.Text({
+  position: 'absolute',
+  top: 24,
+  fontSize: 16,
+  color: '#fff',
+  backgroundColor: '#000',
+  paddingHorizontal: 24,
+  paddingVertical: 8,
+  borderRadius: 32,
+  opacity: 0.4,
+});
+
+const StyledPressable = styled.Pressable({
+  position: 'absolute',
+  bottom: 40,
+  backgroundColor: '#000',
+  padding: 16,
+  borderRadius: 64,
+  opacity: 0.4,
+});
+
+const CAMERA_FRONT = Camera.Constants.Type.front;
+const CAMERA_BACK = Camera.Constants.Type.back;
+const FACE_DETECTOR_SETTINGS = {
+  runClassifications: FaceDetector.Constants.Classifications.all,
+};
+
 const App = () => {
   const [hasPermission, setHasPermission] = useState<null | boolean>(null);
+  const [cameraType, setCameraType] = useState(CAMERA_FRONT);
+  const [smile, setSmile] = useState(0);
+  const [isSmiling, setIsSmiling] = useState(false);
+
+  const name = useMemo(
+    () => (cameraType === CAMERA_FRONT ? 'camera-rear' : 'camera-front'),
+    [cameraType]
+  );
 
   useEffect(() => {
     (async () => {
@@ -31,26 +68,56 @@ const App = () => {
     })();
   }, []);
 
+  const onFacesDetected = useCallback(({ faces }) => {
+    const probability = Math.floor((faces[0]?.smilingProbability ?? 0) * 100);
+
+    setSmile(probability);
+
+    if (probability >= 90) {
+      setIsSmiling(true);
+    }
+  }, []);
+
+  const onPress = useCallback(() => {
+    setCameraType(prev => (prev === CAMERA_FRONT ? CAMERA_BACK : CAMERA_FRONT));
+  }, []);
+
   if (hasPermission === null) {
     return (
-      <StyledView>
+      <StyledSafeAreaView>
+        <StatusBar />
+
         <ActivityIndicator />
-      </StyledView>
+      </StyledSafeAreaView>
     );
   }
 
   if (hasPermission === false) {
     return (
-      <StyledView>
+      <StyledSafeAreaView>
+        <StatusBar />
+
         <StyledText>No access to camera</StyledText>
-      </StyledView>
+      </StyledSafeAreaView>
     );
   }
 
   return (
-    <StyledView>
-      <StyledCamera type={Camera.Constants.Type.front} />
-    </StyledView>
+    <StyledSafeAreaView>
+      <StatusBar />
+
+      <StyledCamera
+        type={cameraType}
+        faceDetectorSettings={FACE_DETECTOR_SETTINGS}
+        onFacesDetected={isSmiling ? undefined : onFacesDetected}
+      />
+
+      <StyledSmile>{smile}%</StyledSmile>
+
+      <StyledPressable onPress={onPress}>
+        <MaterialIcons name={name} size={48} color="#fff" />
+      </StyledPressable>
+    </StyledSafeAreaView>
   );
 };
 
