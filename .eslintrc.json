@@ -24,6 +24,7 @@
     "comma-dangle": "off",
     "object-curly-newline": "off",
     "function-paren-newline": "off",
-    "react/jsx-one-expression-per-line": "off"
+    "react/jsx-one-expression-per-line": "off",
+    "no-alert": "off"
   }
 }

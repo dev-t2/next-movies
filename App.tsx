@@ -1,4 +1,11 @@
-import React, { memo, useCallback, useEffect, useMemo, useState } from 'react';
+import React, {
+  createRef,
+  memo,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { ActivityIndicator, StatusBar } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Camera } from 'expo-camera';
@@ -36,7 +43,7 @@ const StyledSmile = styled.Text({
 
 const StyledPressable = styled.Pressable({
   position: 'absolute',
-  bottom: 40,
+  bottom: 32,
   backgroundColor: '#000',
   padding: 16,
   borderRadius: 64,
@@ -55,28 +62,57 @@ const App = () => {
   const [smile, setSmile] = useState(0);
   const [isSmiling, setIsSmiling] = useState(false);
 
+  const cameraRef = createRef<Camera>();
+
   const name = useMemo(
     () => (cameraType === CAMERA_FRONT ? 'camera-rear' : 'camera-front'),
     [cameraType]
   );
 
+  const requestPermissions = useCallback(async () => {
+    const { status } = await Camera.requestPermissionsAsync();
+
+    setHasPermission(status === 'granted');
+  }, []);
+
   useEffect(() => {
-    (async () => {
-      const { status } = await Camera.requestPermissionsAsync();
+    requestPermissions();
+  }, [requestPermissions]);
 
-      setHasPermission(status === 'granted');
-    })();
-  }, []);
+  // const savePicture = useCallback(async (uri: string) => {}, []);
 
-  const onFacesDetected = useCallback(({ faces }) => {
-    const probability = Math.floor((faces[0]?.smilingProbability ?? 0) * 100);
+  const takePicture = useCallback(async () => {
+    try {
+      if (cameraRef.current) {
+        const { uri } = await cameraRef.current.takePictureAsync({
+          quality: 1,
+        });
 
-    setSmile(probability);
+        if (uri) {
+          // savePicture(uri);
+        }
+      }
+    } catch (err) {
+      alert(err);
 
-    if (probability >= 90) {
-      setIsSmiling(true);
+      setIsSmiling(false);
     }
-  }, []);
+  }, [cameraRef]);
+
+  const onFacesDetected = useCallback(
+    ({ faces }) => {
+      const probability = Math.floor((faces[0]?.smilingProbability ?? 0) * 100);
+
+      setSmile(probability);
+
+      if (probability >= 90) {
+        setIsSmiling(true);
+
+        takePicture();
+      }
+    },
+    [takePicture]
+  );
 
   const onPress = useCallback(() => {
     setCameraType(prev => (prev === CAMERA_FRONT ? CAMERA_BACK : CAMERA_FRONT));
@@ -107,6 +143,7 @@ const App = () => {
       <StatusBar />
 
       <StyledCamera
+        ref={cameraRef}
         type={cameraType}
         faceDetectorSettings={FACE_DETECTOR_SETTINGS}
         onFacesDetected={isSmiling ? undefined : onFacesDetected}
@@ -115,7 +152,7 @@ const App = () => {
       <StyledSmile>{smile}%</StyledSmile>
 
       <StyledPressable onPress={onPress}>
-        <MaterialIcons name={name} size={48} color="#fff" />
+        <MaterialIcons name={name} size={40} color="#fff" />
       </StyledPressable>
     </StyledSafeAreaView>
   );
