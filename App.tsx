@@ -10,6 +10,7 @@ import { ActivityIndicator, StatusBar } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Camera } from 'expo-camera';
 import * as FaceDetector from 'expo-face-detector';
+import * as MediaLibrary from 'expo-media-library';
 import styled from 'styled-components/native';
 
 const StyledSafeAreaView = styled.SafeAreaView({
@@ -55,6 +56,7 @@ const CAMERA_BACK = Camera.Constants.Type.back;
 const FACE_DETECTOR_SETTINGS = {
   runClassifications: FaceDetector.Constants.Classifications.all,
 };
+const ALBUM_NAME = 'Smiling Pictures';
 
 const App = () => {
   const [hasPermission, setHasPermission] = useState<null | boolean>(null);
@@ -79,7 +81,30 @@ const App = () => {
     requestPermissions();
   }, [requestPermissions]);
 
-  // const savePicture = useCallback(async (uri: string) => {}, []);
+  const savePicture = useCallback(async (uri: string) => {
+    try {
+      const { status } = await MediaLibrary.requestPermissionsAsync();
+
+      if (status === 'granted') {
+        const asset = await MediaLibrary.createAssetAsync(uri);
+        const album = await MediaLibrary.getAlbumAsync(ALBUM_NAME);
+
+        if (album) {
+          await MediaLibrary.addAssetsToAlbumAsync([asset], album.id, false);
+        } else {
+          await MediaLibrary.createAlbumAsync(ALBUM_NAME, asset, false);
+        }
+
+        setTimeout(() => setIsSmiling(false), 1000);
+      } else {
+        setHasPermission(false);
+      }
+    } catch (err) {
+      alert(err);
+
+      setIsSmiling(false);
+    }
+  }, []);
 
   const takePicture = useCallback(async () => {
     try {
@@ -89,7 +114,7 @@ const App = () => {
         });
 
         if (uri) {
-          // savePicture(uri);
+          savePicture(uri);
         }
       }
     } catch (err) {
@@ -97,7 +122,7 @@ const App = () => {
 
       setIsSmiling(false);
     }
-  }, [cameraRef]);
+  }, [cameraRef, savePicture]);
 
   const onFacesDetected = useCallback(
     ({ faces }) => {
@@ -133,7 +158,7 @@ const App = () => {
       <StyledSafeAreaView>
         <StatusBar />
 
-        <StyledText>No access to camera</StyledText>
+        <StyledText>No access to Camera or Media Library</StyledText>
       </StyledSafeAreaView>
     );
   }
@@ -149,7 +174,7 @@ const App = () => {
         onFacesDetected={isSmiling ? undefined : onFacesDetected}
       />
 
-      <StyledSmile>{smile}%</StyledSmile>
+      <StyledSmile>😀 {smile}%</StyledSmile>
 
       <StyledPressable onPress={onPress}>
         <MaterialIcons name={name} size={40} color="#fff" />
