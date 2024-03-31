@@ -1,3 +1,3 @@
 export default function Home() {
-  return <h1>Next Movies</h1>;
+  return <h1>Home</h1>;
 }
