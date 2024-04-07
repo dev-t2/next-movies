@@ -7,6 +7,8 @@
     - [Linking and Navigating](https://nextjs.org/docs/app/building-your-application/routing/linking-and-navigating)
     - [Route Groups](https://nextjs.org/docs/app/building-your-application/routing/route-groups)
     - [Dynamic Routes](https://nextjs.org/docs/app/building-your-application/routing/dynamic-routes)
+  - [Data Fetching](https://nextjs.org/docs/app/building-your-application/data-fetching)
+    - [Data Fetching, Caching, and Revalidating](https://nextjs.org/docs/app/building-your-application/data-fetching/fetching-caching-and-revalidating)
   - [Rendering](https://nextjs.org/docs/app/building-your-application/rendering)
     - [Server Components](https://nextjs.org/docs/app/building-your-application/rendering/server-components)
     - [Client Components](https://nextjs.org/docs/app/building-your-application/rendering/client-components)
