@@ -15,7 +15,6 @@
     - [Parallel Routes](https://nextjs.org/docs/app/building-your-application/routing/parallel-routes)
   - [Data Fetching](https://nextjs.org/docs/app/building-your-application/data-fetching)
     - [Fetching, Caching, and Revalidating](https://nextjs.org/docs/app/building-your-application/data-fetching/fetching-caching-and-revalidating)
-    - [Server Actions and Mutations](https://nextjs.org/docs/app/building-your-application/data-fetching/server-actions-and-mutations)
     - [Data Fetching Patterns and Best Practices](https://nextjs.org/docs/app/building-your-application/data-fetching/patterns)
   - [Rendering](https://nextjs.org/docs/app/building-your-application/rendering)
     - [Server Components](https://nextjs.org/docs/app/building-your-application/rendering/server-components)
