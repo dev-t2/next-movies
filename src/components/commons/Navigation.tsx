@@ -3,12 +3,14 @@
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 
+import styles from '@/styles/navigation.module.css';
+
 export default function Navigation() {
   const pathname = usePathname();
 
   return (
-    <nav>
-      <ul>
+    <nav className={styles.container}>
+      <ul className={styles.list}>
         <li>
           <Link href="/">Home</Link> {pathname === '/' ? '🔥' : ''}
         </li>

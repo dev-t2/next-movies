@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 
 import { Navigation } from '@/components/commons';
 
-import '../styles/global.css';
+import '@/styles/global.css';
 
 export const metadata: Metadata = {
   title: { template: 'Next Movies | %s', default: 'Next Movies' },
