@@ -33,3 +33,4 @@
     - [redirect](https://nextjs.org/docs/app/api-reference/functions/redirect)
     - [usePathname](https://nextjs.org/docs/app/api-reference/functions/use-pathname)
     - [useRouter](https://nextjs.org/docs/app/api-reference/functions/use-router)
+- [Reset CSS](https://meyerweb.com/eric/tools/css/reset)
