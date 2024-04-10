@@ -19,6 +19,8 @@
   - [Rendering](https://nextjs.org/docs/app/building-your-application/rendering)
     - [Server Components](https://nextjs.org/docs/app/building-your-application/rendering/server-components)
     - [Client Components](https://nextjs.org/docs/app/building-your-application/rendering/client-components)
+  - [Styling](https://nextjs.org/docs/app/building-your-application/styling)
+    - [CSS Modules](https://nextjs.org/docs/app/building-your-application/styling/css-modules)
   - [File Conventions](https://nextjs.org/docs/app/api-reference/file-conventions)
     - [Error](https://nextjs.org/docs/app/api-reference/file-conventions/error)
     - [Layout](https://nextjs.org/docs/app/api-reference/file-conventions/layout)
