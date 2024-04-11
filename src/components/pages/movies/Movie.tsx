@@ -7,7 +7,7 @@ async function getMovie(id: string) {
   return movie;
 }
 
-export default async function Infomation({ id }: { id: string }) {
+export default async function Movie({ id }: { id: string }) {
   const movie = await getMovie(id);
 
   return <h4>{JSON.stringify(movie)}</h4>;

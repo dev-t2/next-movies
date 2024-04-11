@@ -1,5 +1,5 @@
 'use client';
 
 export default function MovieError() {
-  return <h1>Error</h1>;
+  return <h1>Movie Error</h1>;
 }
