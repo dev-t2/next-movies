@@ -9,8 +9,8 @@ export default function Navigation() {
   const pathname = usePathname();
 
   return (
-    <nav className={styles.container}>
-      <ul className={styles.list}>
+    <nav className={styles.nav}>
+      <ul>
         <li>
           <Link href="/">Home</Link> {pathname === '/' ? '🔥' : ''}
         </li>
