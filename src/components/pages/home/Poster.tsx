@@ -16,8 +16,8 @@ export default function Poster({ id, title, path }: IPoster) {
   const router = useRouter();
 
   const onClick = useCallback(() => {
-    router.push('/movies/id');
-  }, [router]);
+    router.push(`/movies/${id}`);
+  }, [router, id]);
 
   return (
     <div className={styles.movie} onClick={onClick}>
