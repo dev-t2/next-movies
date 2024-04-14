@@ -24,7 +24,9 @@ export default function Poster({ id, title, path }: IPoster) {
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src={path} alt={title} />
 
-      <Link href={`/movies/${id}`}>{title}</Link>
+      <Link prefetch href={`/movies/${id}`}>
+        {title}
+      </Link>
     </div>
   );
 }
